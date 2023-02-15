@@ -1,0 +1,6 @@
+name: Title
+version: '${project.version}'
+main: win.oreo.title.Main
+api-version: 1.19
+commands:
+  title:
