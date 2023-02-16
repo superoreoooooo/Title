@@ -28,90 +28,97 @@ public class TitleCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        if (args.length > 0) {
-            switch (args[0]) {
-                case "set" -> {
-                    if (args.length >= 3) {
-                        if (Bukkit.getPlayerExact(args[1]) != null) {
-                            Player player = Bukkit.getPlayerExact(args[1]);
-                            String str = args[2];
-                            Title title;
+        if (sender.hasPermission("administrators")) {
+            if (args.length > 0) {
+                switch (args[0]) {
+                    case "set" -> {
+                        if (args.length >= 3) {
+                            if (Bukkit.getPlayerExact(args[1]) != null) {
+                                Player player = Bukkit.getPlayerExact(args[1]);
+                                String str = args[2];
+                                Title title;
 
-                            if (titleUtil.getTitle(player) == null) {
-                                title = new Title(player, "");
-                                TitleUtil.titles.add(title);
-                            } else {
-                                title = titleUtil.getTitle(player);
-                            }
-
-                            if (args.length == 4 && args[3].equalsIgnoreCase("rainbow")) {
-                                title.setTitle(HEXChatColor.toRainBow(str));
-                            } else {
-                                title.setTitle(str);
-                            }
-                            sender.sendMessage(HEXChatColor.toRainBow("set!"));
-                        }
-                    }
-                }
-                case "color" -> {
-                    if (args.length == 3) {
-                        if (Bukkit.getPlayerExact(args[1]) != null) {
-                            Player player = Bukkit.getPlayerExact(args[1]);
-                            String str = args[2];
-                            Title title;
-
-                            if (str.length() != 7 && str.charAt(0) != '#') {
-                                sender.sendMessage("not hex code!");
-                                return false;
-                            }
-
-                            if (titleUtil.getTitle(player) == null) {
-                                sender.sendMessage(HEXChatColor.toRainBow("Player don't exist!"));
-                                return false;
-                            } else {
-                                title = titleUtil.getTitle(player);
-                            }
-
-                            String s = title.getTitle();
-
-                            if (s.contains("§")) {
-                                Matcher matcher = pattern1.matcher(s);
-                                while(matcher.find()) {
-                                    String c = s.substring(matcher.start(), matcher.end());
-                                    s = s.replace(c, "");
-                                    matcher = pattern1.matcher(s);
+                                if (titleUtil.getTitle(player) == null) {
+                                    title = new Title(player, "");
+                                    TitleUtil.titles.add(title);
+                                } else {
+                                    title = titleUtil.getTitle(player);
                                 }
-                            } else {
-                                Matcher matcher = pattern.matcher(s);
-                                while(matcher.find()) {
-                                    String c = s.substring(matcher.start(), matcher.end());
-                                    s = s.replace(c, "");
-                                    matcher = pattern.matcher(s);
+
+                                if (args.length == 4 && args[3].equalsIgnoreCase("rainbow")) {
+                                    title.setTitle(HEXChatColor.toRainBow(str));
+                                } else {
+                                    title.setTitle(str);
+                                }
+                                sender.sendMessage(HEXChatColor.toRainBow("set!"));
+                            }
+                        }
+                    }
+                    case "color" -> {
+                        if (args.length == 3) {
+                            if (Bukkit.getPlayerExact(args[1]) != null) {
+                                Player player = Bukkit.getPlayerExact(args[1]);
+                                String str = args[2];
+                                Title title;
+
+                                if (str.length() != 7 && str.charAt(0) != '#') {
+                                    sender.sendMessage("not hex code!");
+                                    return false;
+                                }
+
+                                if (titleUtil.getTitle(player) == null) {
+                                    sender.sendMessage(HEXChatColor.toRainBow("Player don't exist!"));
+                                    return false;
+                                } else {
+                                    title = titleUtil.getTitle(player);
+                                }
+
+                                String s = title.getTitle();
+
+                                if (s.contains("§")) {
+                                    Matcher matcher = pattern1.matcher(s);
+                                    while(matcher.find()) {
+                                        String c = s.substring(matcher.start(), matcher.end());
+                                        s = s.replace(c, "");
+                                        matcher = pattern1.matcher(s);
+                                    }
+                                } else {
+                                    Matcher matcher = pattern.matcher(s);
+                                    while(matcher.find()) {
+                                        String c = s.substring(matcher.start(), matcher.end());
+                                        s = s.replace(c, "");
+                                        matcher = pattern.matcher(s);
+                                    }
+                                }
+
+                                title.setTitle(HEXChatColor.format(str + s));
+                            }
+                        }
+                    }
+                    case "remove" -> {
+                        if (args.length == 2) {
+                            if (Bukkit.getPlayerExact(args[1]) != null) {
+                                Player player = Bukkit.getPlayerExact(args[1]);
+
+                                if (titleUtil.getTitle(player) == null) {
+                                    sender.sendMessage(HEXChatColor.toRainBow("Player don't exist!"));
+                                    return false;
+                                } else {
+                                    titleUtil.remove(titleUtil.getTitle(player));
+                                    NameTagChanger.changePlayerName(player, "", "", TeamAction.DESTROY);
+                                    sender.sendMessage(HEXChatColor.toRainBow("removed!"));
                                 }
                             }
-
-                            title.setTitle(HEXChatColor.format(str + s));
+                        }
+                    }
+                    case "list" -> {
+                        for (Title title : TitleUtil.titles) {
+                            sender.sendMessage(title.getPlayer() + " " + title.getTitle());
                         }
                     }
                 }
-                case "remove" -> {
-                    if (args.length == 2) {
-                        if (Bukkit.getPlayerExact(args[1]) != null) {
-                            Player player = Bukkit.getPlayerExact(args[1]);
-
-                            if (titleUtil.getTitle(player) == null) {
-                                sender.sendMessage(HEXChatColor.toRainBow("Player don't exist!"));
-                                return false;
-                            } else {
-                                TitleUtil.titles.remove(titleUtil.getTitle(player));
-                                NameTagChanger.changePlayerName(player, "", "", TeamAction.DESTROY);
-                                sender.sendMessage(HEXChatColor.toRainBow("removed!"));
-                            }
-                        }
-                    }
-                }
+                titleUtil.update();
             }
-            titleUtil.update();
         }
         return false;
     }

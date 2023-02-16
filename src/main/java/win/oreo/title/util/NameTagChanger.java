@@ -12,7 +12,7 @@ public class NameTagChanger {
     private static Scoreboard scoreboard;
 
     public static void changePlayerName(Player player, String prefix, String suffix, TeamAction action) {
-        if (player.getScoreboard() == null || prefix == null || suffix == null || action == null) {
+        if (player == null || player.getScoreboard() == null || prefix == null || suffix == null || action == null) {
             return;
         }
 
@@ -49,5 +49,4 @@ public class NameTagChanger {
     private static String Color(String input) {
         return ChatColor.translateAlternateColorCodes('&', input);
     }
-
 }

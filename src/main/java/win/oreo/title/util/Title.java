@@ -1,22 +1,23 @@
 package win.oreo.title.util;
 
 import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 public class Title {
-    private Player player;
+    private OfflinePlayer player;
     private String title;
 
-    public Title(Player player, String title) {
+    public Title(OfflinePlayer player, String title) {
         this.player = player;
         this.title = title;
     }
 
-    public Player getPlayer() {
+    public OfflinePlayer getPlayer() {
         return player;
     }
 
-    public void setPlayer(Player player) {
+    public void setPlayer(OfflinePlayer player) {
         this.player = player;
     }
 
