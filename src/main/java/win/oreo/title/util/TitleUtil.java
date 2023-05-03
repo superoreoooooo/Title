@@ -6,6 +6,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import win.oreo.hexchatcolor.HEXChatColor;
@@ -65,6 +66,16 @@ public class TitleUtil implements Listener {
 
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
-        update();
+        Bukkit.getScheduler().runTaskLater(JavaPlugin.getPlugin(Main.class), this::update, 60L);
+    }
+
+    @EventHandler
+    public void onChat(AsyncPlayerChatEvent e) {
+        Player player = e.getPlayer();
+        for (Title title : titles) {
+            if (title.getPlayer().getUniqueId().equals(player.getUniqueId())) {
+                e.setFormat("<" + title.getTitle() + ChatColor.WHITE + ">" + " %2$s");
+            }
+        }
     }
 }

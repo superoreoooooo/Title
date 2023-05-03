@@ -18,13 +18,4 @@ public class TitleListener implements Listener {
     public TitleListener() {
         this.util = new TitleUtil();
     }
-
-    @EventHandler
-    public void onChat(AsyncPlayerChatEvent e) {
-        Player player = e.getPlayer();
-        if (util.getTitle(player) != null) {
-            Title title = util.getTitle(player);
-            e.setFormat("<" + title.getTitle() + ChatColor.WHITE + ">" + " %2$s");
-        }
-    }
 }
