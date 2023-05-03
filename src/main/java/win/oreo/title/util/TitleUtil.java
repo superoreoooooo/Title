@@ -66,7 +66,7 @@ public class TitleUtil implements Listener {
 
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
-        Bukkit.getScheduler().runTaskLater(JavaPlugin.getPlugin(Main.class), this::update, 60L);
+        update();
     }
 
     @EventHandler
