@@ -5,6 +5,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import win.oreo.hexchatcolor.HEXChatColor;
 import win.oreo.title.command.TitleCommand;
 import win.oreo.title.command.TitleCompleter;
+import win.oreo.title.listener.TitleListener;
 import win.oreo.title.util.TitleUtil;
 import win.oreo.title.util.YmlManager;
 
@@ -24,6 +25,7 @@ public final class Main extends JavaPlugin {
         getCommand("title").setExecutor(new TitleCommand());
         getCommand("title").setTabCompleter(new TitleCompleter());
         Bukkit.getPluginManager().registerEvents(new TitleUtil(), this);
+        Bukkit.getPluginManager().registerEvents(new TitleListener(), this);
 
         titleUtil.initialize();
     }

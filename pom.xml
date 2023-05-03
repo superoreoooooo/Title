@@ -39,7 +39,6 @@
                         </goals>
                         <configuration>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
-                            <outputFile>D:\develop\Title\server\plugins\Title.jar</outputFile>
                         </configuration>
                     </execution>
                 </executions>
